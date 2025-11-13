@@ -1,0 +1,1 @@
+# Competition_and_Investment_Model_of_Wealth_Distribution_analysis
