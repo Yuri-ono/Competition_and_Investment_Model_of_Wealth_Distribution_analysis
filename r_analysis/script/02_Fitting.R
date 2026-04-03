@@ -34,8 +34,7 @@ plot_ccdf_log_log <- function(data, title) {
 ######################
 ####----データ----####
 ######################
-project_root <- dirname(here())
-data_path <- file.path(project_root, "data", "sorted_mean_incomes_99.feather")
+data_path <- here("data", "sorted_mean_incomes_99.feather")
 
 df <- read_feather(data_path)
 df$mean_incomes <- lapply(df$mean_incomes, fromJSON)  # JSON文字列をリストに変換
@@ -119,8 +118,12 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     color = "black"   # ★枠線黒
   )
 
-data_path <- file.path(project_root, "results", "CCDF_gamma.pdf")
-ggsave(data_path)
+ggsave(
+  here("results", "CCDF_gamma.pdf"),
+  width = 12,
+  height = 10,
+  units = "in"
+)
 
 ###1.0##################
 # データ読み込みとフィルター
@@ -201,8 +204,12 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     color = "black"   # ★枠線黒
   )
 
-data_path <- file.path(project_root, "results", "CCDF_lnorm.pdf")
-ggsave(data_path)
+ggsave(
+  here("results", "CCDF_lnorm.pdf"),
+  width = 12,
+  height = 10,
+  units = "in"
+)
 
 ###0.2----------------------------
 
@@ -544,14 +551,30 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
   ) -> a8
 
 a2
-data_path <- file.path(project_root, "results", "CCDF_gl_2.pdf")
-ggsave(data_path)
+ggsave(
+  here("results", "CCDF_gl_2.pdf"),
+  width = 12,
+  height = 10,
+  units = "in"
+)
 a4
-data_path <- file.path(project_root, "results", "CCDF_gl_4.pdf")
-ggsave(data_path)
+ggsave(
+  here("results", "CCDF_gl_4.pdf"),
+  width = 12,
+  height = 10,
+  units = "in"
+)
 a6
-data_path <- file.path(project_root, "results", "CCDF_gl_6.pdf")
-ggsave(data_path)
+ggsave(
+  here("results", "CCDF_gl_6.pdf"),
+  width = 12,
+  height = 10,
+  units = "in"
+)
 a8
-data_path <- file.path(project_root, "results", "CCDF_gl_8.pdf")
-ggsave(data_path)
+ggsave(
+  here("results", "CCDF_gl_8.pdf"),
+  width = 12,
+  height = 10,
+  units = "in"
+)
