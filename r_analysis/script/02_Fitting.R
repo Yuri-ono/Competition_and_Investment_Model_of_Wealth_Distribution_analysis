@@ -1,5 +1,6 @@
 #load data
 library(here)
+i_am("r_analysis/script/02_Fitting.R")
 library(jsonlite)
 # fit data
 library(poweRlaw)
@@ -41,9 +42,9 @@ df$mean_incomes <- lapply(df$mean_incomes, fromJSON)  # JSON文字列をリス�
 df$mean_incomes
 df <- df %>%
   rename(mean_income = mean_incomes)
-save(df,file = "mergedf_01.rda")
+save(df,file = here("mergedf_01.rda"))
 
-load(file = "mergedf_01.rda")
+load(file = here("mergedf_01.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 0.0)
 # データ系列の数（たとえば9）
@@ -127,7 +128,7 @@ ggsave(
 
 ###1.0##################
 # データ読み込みとフィルター
-load(file = "mergedf_01.rda")
+load(file = here("mergedf_01.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 1.0)
 
@@ -213,7 +214,7 @@ ggsave(
 
 ###0.2----------------------------
 
-load(file = "mergedf_01.rda")
+load(file = here("mergedf_01.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 0.2)
 

@@ -1,3 +1,5 @@
+library(here)
+i_am("r_analysis/script/03_Goodness_of_Fit.R")
 library(fitdistrplus)
 library(jsonlite)
 library(dplyr)
@@ -62,7 +64,7 @@ vuong <- function(censdata,ln_fit,gamma_fit){
   #正ならば，対数正規分布
 }
 
-load(file = "mergedf_01.rda")
+load(file = here("mergedf_01.rda"))
 
 # 結果を保存するベクトル
 test_stats <- numeric(nrow(df))
