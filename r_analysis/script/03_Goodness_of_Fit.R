@@ -1,12 +1,7 @@
 library(here)
 i_am("r_analysis/script/03_Goodness_of_Fit.R")
 library(fitdistrplus)
-library(jsonlite)
-library(dplyr)
 library(poweRlaw)
-library(gridExtra)
-library(ggplot2)
-library(tidyr)
 
 vuong <- function(censdata,ln_fit,gamma_fit){
   
@@ -121,42 +116,5 @@ df$lnorm_vs_gamma_stat <- vuongst
 # slightly from the paper; the output is saved under a different name.
 save(df, file = here("results", "merge_01_vuong_pvalue_rerun.rda"))
 
-
-
-# Heatmap
-ggplot(df, aes(x = factor(ω), y = factor(α), fill = pl_vs_lnorm_stat)) +
-  geom_tile(color = "white") +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", 
-                       midpoint = 0.5, name = "Test Statistic") +
-  labs(
-    title = "Power-law vs Lognormal p_one_sided by (ω, α)",
-    x = expression(omega),
-    y = expression(alpha)
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text = element_text(size = 10),
-    plot.title = element_text(hjust = 0.5, size = 14)
-  )
-#ggsave("merge_vuong_pvalue_high_main.pdf")
 df$pl_vs_lnorm_stat |> summary()
-
-
-# Heatmap
-ggplot(df, aes(x = factor(ω), y = factor(α), fill = lnorm_vs_gamma_stat)) +
-  geom_tile(color = "white") +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", 
-                       midpoint = 0.5, name = "Test Statistic") +
-  labs(
-    title = "Lognormal vs Gamma p_one_sided by (ω, α)",
-    x = expression(omega),
-    y = expression(alpha)
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text = element_text(size = 10),
-    plot.title = element_text(hjust = 0.5, size = 14)
-  )
-#ggsave("merge_vuong_pvalue_low_main.pdf")
 df$lnorm_vs_gamma_stat |> summary()
-# Red favors gamma, blue favors log-normal
