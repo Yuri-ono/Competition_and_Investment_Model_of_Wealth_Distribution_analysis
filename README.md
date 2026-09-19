@@ -1,50 +1,92 @@
-# Competition_and_Investment_Model_of_Wealth_Distribution_analysis
+# Competition and Investment Model of Wealth Distribution
 
-This simulations were performed using Julia 1.10.6, and subsequent data analysis were conducted using R 4.4.2.
+Replication code and data for:
 
-## Environment
+> [AUTHORS] ([YEAR]). Competition and investment model of wealth distribution. *The Journal of Mathematical Sociology*. [DOI]
 
-### Julia (1.10.6)
+## Files
 
-Package versions are pinned in `julia_simulation/Project.toml` and `julia_simulation/Manifest.toml`.
+### Julia code (`julia_simulation/`)
+
+| File | Description | Figures |
+| --- | --- | --- |
+| `code/01_run_simulation.ipynb` | Simulation of the unified model: mean and Gini coefficient, time evolution of the Gini coefficient, and generation of the wealth distributions used in the analysis | Figures 1, 2 |
+
+### R code (`r_analysis/script/`)
+
+| File | Description | Figures |
+| --- | --- | --- |
+| `02_Fitting.R` | CCDF plots with gamma and log-normal fits | Figures 3, 4 |
+| `03_Goodness_of_Fit.R` | Vuong tests: power-law vs. log-normal for the upper tail, gamma vs. log-normal for the bulk (recomputation, about 3 minutes) | Figures 5, 6 |
+| `04_Powerlaw_Bootstrap.R` | Power-law goodness-of-fit test with bootstrap p-values (recomputation, about 1 hour) | Section 4 (text) |
+| `05_Plot_Heatmaps.R` | Heatmaps of the test results | Figures 5, 6 |
+
+### Data (`data/`, `results/`)
+
+| File | Description |
+| --- | --- |
+| `data/sorted_mean_incomes_99.feather` | Simulated wealth distributions for each (ω, α) |
+| `results/merge_01_vuong_pvalue_main.rda` | Vuong test results reported in the paper (Figures 5 and 6) |
+| `results/mergedata_01_main_pvalue_toward_powerlaw.rda` | Power-law bootstrap p-values reported in the paper |
+
+`data/sorted_mean_incomes_99.feather` contains 99 rows, one for each parameter set, with the following variables:
+
+- `ω`: Proportion of wealth lost by the loser (0.1--0.9)
+- `α`: Mixing parameter between competition and investment (0.0--1.0)
+- `mean_incomes`: Wealth of the N = 1000 agents at T = 100, sorted in ascending order and averaged by rank over 100 trials (JSON string)
+
+The `.rda` files in `results/` contain the same data (`mean_income`) and the test results:
+
+- `pl_vs_lnorm_stat`: One-sided p-value of the Vuong test, power-law vs. log-normal (Figure 5)
+- `lnorm_vs_gamma_stat`: One-sided p-value of the Vuong test, gamma vs. log-normal (Figure 6)
+- `p_value`: Bootstrap p-value of the power-law goodness-of-fit test
+
+## Requirements
+
+- Julia 1.10.6 (packages pinned in `julia_simulation/Project.toml` and `julia_simulation/Manifest.toml`)
+- R 4.4.2 (packages pinned with [renv](https://rstudio.github.io/renv/) in `r_analysis/renv.lock`), including
+  - poweRlaw 1.0.0
+  - fitdistrplus 1.2-2
+  - ggplot2 4.0.0
+  - arrow 22.0.0
+
+## Usage
+
+### Simulation (Julia)
 
 ```sh
 julia +1.10.6 --project=julia_simulation -e 'using Pkg; Pkg.instantiate()'
 ```
 
-Run `julia_simulation/code/01_run_simulation.ipynb` with this environment activated
+Run `julia_simulation/code/01_run_simulation.ipynb` with this environment
 (a Julia 1.10.6 kernel from [IJulia](https://github.com/JuliaLang/IJulia.jl) is required).
+Running the "Data Generate" section overwrites `data/sorted_mean_incomes_99.feather`.
 
-### R (4.4.2)
+### Analysis (R)
 
-Package versions are pinned with [renv](https://rstudio.github.io/renv/) in `r_analysis/renv.lock`.
-Start R 4.4.2 in `r_analysis/` (renv is activated by `r_analysis/.Rprofile`) and restore the packages:
+Start R 4.4.2 in `r_analysis/` (renv is activated by `r_analysis/.Rprofile`), restore the packages, and run the scripts in numerical order:
 
 ```r
 renv::restore()
+
+source("script/02_Fitting.R")
+source("script/03_Goodness_of_Fit.R")
+source("script/04_Powerlaw_Bootstrap.R")
+source("script/05_Plot_Heatmaps.R")
 ```
 
-Then run the scripts in `r_analysis/script/` in numerical order.
+Figures are saved to `results/`.
 
-## Scripts and outputs
+## Notes on reproducibility
 
-| Script | Output | Paper |
-| --- | --- | --- |
-| `julia_simulation/code/01_run_simulation.ipynb` | `data/sorted_mean_incomes_99.feather`, `results/Fig1_gini_convergence.pdf`, `results/Fig2a_mean.pdf`, `results/Fig2b_gini.pdf` | Figures 1 and 2 |
-| `r_analysis/script/02_Fitting.R` | `mergedf_01.rda`, `results/CCDF_gamma.pdf`, `results/CCDF_lnorm.pdf` | Figure 3 |
-| | `results/CCDF_gl_2.pdf`, `results/CCDF_gl_4.pdf`, `results/CCDF_gl_6.pdf`, `results/CCDF_gl_8.pdf` | Figure 4 |
-| `r_analysis/script/03_Goodness_of_Fit.R` | `results/merge_01_vuong_pvalue_rerun.rda` | Recomputes the Vuong tests (about 3 minutes) |
-| `r_analysis/script/04_Powerlaw_Bootstrap.R` | `results/powerlaw_pvalue_rerun.rda` | Recomputes the power-law bootstrap p-values (about 1 hour) |
-| `r_analysis/script/05_Plot_Heatmaps.R` | `results/Fig5_vuong_pl_vs_lnorm.pdf`, `results/Fig6_vuong_lnorm_vs_gamma.pdf`, `results/powerlaw_pvalue.pdf` | Figures 5 and 6, power-law p-values in the text |
+- `05_Plot_Heatmaps.R` draws Figures 5 and 6 from the stored results in `results/`.
+  If these files are removed, it uses the results recomputed by `03` and `04` instead.
+- The gamma vs. log-normal comparison (Figure 6) and the bootstrap p-values are stochastic,
+  and the stored results were computed without a fixed seed,
+  so the values recomputed by `03` and `04` differ slightly from the paper.
+- `data/sorted_mean_incomes_99.feather` is the simulation output used in the paper.
+  Re-running the simulation reproduces its statistical properties, but not the exact values.
 
-The values reported in the paper for the goodness-of-fit tests are stored in
-`results/merge_01_vuong_pvalue_main.rda` (Figures 5 and 6) and
-`results/mergedata_01_main_pvalue_toward_powerlaw.rda` (power-law p-values),
-and `05_Plot_Heatmaps.R` draws the figures from these files.
-If these files are removed, `05_Plot_Heatmaps.R` uses the results recomputed by `03` and `04` instead.
-The gamma vs. log-normal comparison (Figure 6) and the bootstrap p-values are stochastic
-and the stored results were computed without a fixed seed,
-so the values recomputed by `03` and `04` differ slightly from the paper.
+## License
 
-`data/sorted_mean_incomes_99.feather` is the simulation output used in the paper.
-Re-running the simulation reproduces its statistical properties, but not the exact values.
+MIT
