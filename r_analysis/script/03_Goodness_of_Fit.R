@@ -11,8 +11,7 @@ library(tidyr)
 vuong <- function(censdata,ln_fit,gamma_fit){
   
   shape <- gamma_fit$estimate["shape"]
-  rate  <- 1/gamma_fit$estimate["scale"]
-  #rate  <- gamma_fit$estimate["rate"]
+  rate  <- gamma_fit$estimate["rate"]
   
   # 3. 各点の尤度・対数尤度を計算
   likelihoods <- mapply(function(l, r) {
@@ -66,6 +65,8 @@ vuong <- function(censdata,ln_fit,gamma_fit){
 
 load(file = here("mergedf_01.rda"))
 
+set.seed(1)
+
 # 結果を保存するベクトル
 test_stats <- numeric(nrow(df))
 vuongst <- numeric(nrow(df))
@@ -100,29 +101,25 @@ for (i in 1:nrow(df)) {
   #  left  = ifelse(data < xmin, data, xmin),  
   #  right = ifelse(data < xmin, data, NA)
   #)
-  censdata <- data.frame(#よくわからんでこれでやってみる
+  censdata <- data.frame(
     left  = data,   # すべてのデータを left に設定
     right = ifelse(data >= xmin, NA, data)  # xmin 以上のデータは右検閲 (NA)
   )
   
-  gamma_fit <- fitdistcens(censdata, "gamma",
-    optim.method = "L-BFGS-B",   # 制約付き推定
-  lower = c(1e-6, 1e-6),       # shape, scale > 0
-  start = list(shape = 2, scale = mean(data[data < xmin])/2) # 初期値
-  )
-  ln_fit <- fitdistcens(censdata, "lnorm",
-    optim.method = "Nelder-Mead",
-  start = list(
-    meanlog = log(mean(data[data < xmin])),
-    sdlog   = sd(log(data[data < xmin]))
-  )
-)
-  #SANN
+  gamma_fit <- fitdistcens(censdata, "gamma", optim.method = "SANN")
+  ln_fit <- fitdistcens(censdata, "lnorm", optim.method = "SANN")
+
   vuongst[i] <- 1 - pnorm(vuong(censdata, ln_fit, gamma_fit))
 }
 # dfに列として追加
 df$pl_vs_lnorm_stat <- test_stats
 df$lnorm_vs_gamma_stat <- vuongst
+
+# The values reported in the paper are stored in
+# results/merge_01_vuong_pvalue_main.rda. SANN is stochastic and the stored
+# results were computed without a fixed seed, so lnorm_vs_gamma_stat differs
+# slightly from the paper; the output is saved under a different name.
+save(df, file = here("results", "merge_01_vuong_pvalue_rerun.rda"))
 
 
 

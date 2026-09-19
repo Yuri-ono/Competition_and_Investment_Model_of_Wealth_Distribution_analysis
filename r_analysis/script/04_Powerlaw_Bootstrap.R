@@ -9,7 +9,7 @@ library(poweRlaw)
 # so that the stored results are not overwritten.
 # Note: bootstrap_p() is stochastic, and the stored results were computed
 # without a fixed seed, so recomputed values differ slightly from the paper.
-# Runtime: about 1 minute per parameter set (1-2 hours in total).
+# Runtime: about 1 hour in total.
 
 load(file = here("mergedf_01.rda"))  # created by 02_Fitting.R
 
