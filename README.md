@@ -44,7 +44,7 @@ The `.rda` files in `results/` contain the same data (`mean_income`) and the tes
 ## Requirements
 
 - Julia 1.10.6 (packages pinned in `julia_simulation/Project.toml` and `julia_simulation/Manifest.toml`)
-- R 4.4.2 (packages pinned with [renv](https://rstudio.github.io/renv/) in `r_analysis/renv.lock`), including
+- R 4.4.2 (packages pinned with [renv](https://rstudio.github.io/renv/) in `renv.lock`), including
   - poweRlaw 1.0.0
   - fitdistrplus 1.2-2
   - ggplot2 4.0.0
@@ -64,15 +64,15 @@ Running the "Data Generate" section overwrites `data/sorted_mean_incomes_99.feat
 
 ### Analysis (R)
 
-Start R 4.4.2 in `r_analysis/` (renv is activated by `r_analysis/.Rprofile`), restore the packages, and run the scripts in numerical order:
+Start R 4.4.2 in the repository root (renv is activated by `.Rprofile`), restore the packages, and run the scripts in numerical order:
 
 ```r
 renv::restore()
 
-source("script/02_Fitting.R")
-source("script/03_Goodness_of_Fit.R")
-source("script/04_Powerlaw_Bootstrap.R")
-source("script/05_Plot_Heatmaps.R")
+source("r_analysis/script/02_Fitting.R")
+source("r_analysis/script/03_Goodness_of_Fit.R")
+source("r_analysis/script/04_Powerlaw_Bootstrap.R")
+source("r_analysis/script/05_Plot_Heatmaps.R")
 ```
 
 Figures are saved to `results/`.

@@ -54,10 +54,13 @@ packrat/packrat.lock
 # Default graphics device output of Rscript
 Rplots.pdf
 
+# Results recomputed by 03 and 04 (the stored results used in the paper are tracked)
+results/*_rerun.rda
+
 # R session/profile (user-specific)
 .Rprofile
 # except the one that activates renv for the analysis project
-!r_analysis/.Rprofile
+!/.Rprofile
 
 # --- General / Editor / OS ---
 # macOS
