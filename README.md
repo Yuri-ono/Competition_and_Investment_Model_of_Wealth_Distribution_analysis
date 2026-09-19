@@ -41,6 +41,7 @@ The values reported in the paper for the goodness-of-fit tests are stored in
 `results/merge_01_vuong_pvalue_main.rda` (Figures 5 and 6) and
 `results/mergedata_01_main_pvalue_toward_powerlaw.rda` (power-law p-values),
 and `05_Plot_Heatmaps.R` draws the figures from these files.
+If these files are removed, `05_Plot_Heatmaps.R` uses the results recomputed by `03` and `04` instead.
 The gamma vs. log-normal comparison (Figure 6) and the bootstrap p-values are stochastic
 and the stored results were computed without a fixed seed,
 so the values recomputed by `03` and `04` differ slightly from the paper.
