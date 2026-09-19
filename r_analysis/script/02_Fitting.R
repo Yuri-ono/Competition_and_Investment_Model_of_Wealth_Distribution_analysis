@@ -554,6 +554,7 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
 a2
 ggsave(
   here("results", "CCDF_gl_2.pdf"),
+  plot = a2,
   width = 12,
   height = 10,
   units = "in"
@@ -561,6 +562,7 @@ ggsave(
 a4
 ggsave(
   here("results", "CCDF_gl_4.pdf"),
+  plot = a4,
   width = 12,
   height = 10,
   units = "in"
@@ -568,6 +570,7 @@ ggsave(
 a6
 ggsave(
   here("results", "CCDF_gl_6.pdf"),
+  plot = a6,
   width = 12,
   height = 10,
   units = "in"
@@ -575,6 +578,7 @@ ggsave(
 a8
 ggsave(
   here("results", "CCDF_gl_8.pdf"),
+  plot = a8,
   width = 12,
   height = 10,
   units = "in"
