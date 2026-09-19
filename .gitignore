@@ -51,6 +51,9 @@ renv/python/
 packrat/lib/
 packrat/packrat.lock
 
+# Default graphics device output of Rscript
+Rplots.pdf
+
 # R session/profile (user-specific)
 .Rprofile
 # except the one that activates renv for the analysis project
