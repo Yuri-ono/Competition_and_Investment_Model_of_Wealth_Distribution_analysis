@@ -17,8 +17,8 @@ Replication code and data for:
 | File | Description | Figures |
 | --- | --- | --- |
 | `02_Fitting.R` | CCDF plots with gamma and log-normal fits | Figures 3, 4 |
-| `03_Goodness_of_Fit.R` | Vuong tests: power-law vs. log-normal for the upper tail, gamma vs. log-normal for the bulk (recomputation, about 3 minutes) | Figures 5, 6 |
-| `04_Powerlaw_Bootstrap.R` | Power-law goodness-of-fit test with bootstrap p-values (recomputation, about 1 hour) | Section 4 (text) |
+| `03_Goodness_of_Fit.R` | Vuong tests: power-law vs. log-normal for the upper tail, gamma vs. log-normal for the bulk (about 3 minutes) | Figures 5, 6 |
+| `04_Powerlaw_Bootstrap.R` | Power-law goodness-of-fit test with bootstrap p-values (about 1 hour) | Section 4 (text) |
 | `05_Plot_Heatmaps.R` | Heatmaps of the test results | Figures 5, 6 |
 
 ### Data (`data/`, `results/`)
@@ -26,8 +26,8 @@ Replication code and data for:
 | File | Description |
 | --- | --- |
 | `data/sorted_mean_incomes_99.feather` | Simulated wealth distributions for each (ω, α) |
-| `results/merge_01_vuong_pvalue_main.rda` | Vuong test results reported in the paper (Figures 5 and 6) |
-| `results/mergedata_01_main_pvalue_toward_powerlaw.rda` | Power-law bootstrap p-values reported in the paper |
+| `results/vuong_pvalue.rda` | Vuong test results (Figures 5 and 6), created by `03_Goodness_of_Fit.R` |
+| `results/powerlaw_bootstrap.rda` | Power-law bootstrap p-values, created by `04_Powerlaw_Bootstrap.R` |
 
 `data/sorted_mean_incomes_99.feather` contains 99 rows, one for each parameter set, with the following variables:
 
@@ -79,11 +79,10 @@ Figures are saved to `results/`.
 
 ## Notes on reproducibility
 
-- `05_Plot_Heatmaps.R` draws Figures 5 and 6 from the stored results in `results/`.
-  If these files are removed, it uses the results recomputed by `03` and `04` instead.
-- The gamma vs. log-normal comparison (Figure 6) and the bootstrap p-values are stochastic,
-  and the stored results were computed without a fixed seed,
-  so the values recomputed by `03` and `04` differ slightly from the paper.
+- In the bulk comparison (Figure 6), observations with x >= xmin are right-censored at xmin,
+  so that they contribute only the information that the value is at least xmin.
+- The fits in `03` (SANN) and the bootstrap in `04` are stochastic, but both scripts fix the seed,
+  so they reproduce the values in the figures with the R and package versions pinned here.
 - `data/sorted_mean_incomes_99.feather` is the simulation output used in the paper.
   Re-running the simulation reproduces its statistical properties, but not the exact values.
 

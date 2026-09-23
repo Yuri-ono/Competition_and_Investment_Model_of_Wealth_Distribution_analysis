@@ -92,15 +92,11 @@ for (i in 1:nrow(df)) {
   
   # ---- Bulk of the distribution ----
   xmin <- pl_model$xmin  # lower bound of the power-law tail
-  #censdata <- data.frame(
-  #  left  = ifelse(data < xmin, data, xmin),  
-  #  right = ifelse(data < xmin, data, NA)
-  #)
   censdata <- data.frame(
-    left  = data,   # all observations
-    right = ifelse(data >= xmin, NA, data)  # observations x >= xmin are right-censored (NA)
+    left  = ifelse(data < xmin, data, xmin),  # observations x >= xmin are right-censored at xmin
+    right = ifelse(data < xmin, data, NA)     # so they contribute only P(X >= xmin)
   )
-  
+
   gamma_fit <- fitdistcens(censdata, "gamma", optim.method = "SANN")
   ln_fit <- fitdistcens(censdata, "lnorm", optim.method = "SANN")
 
@@ -110,11 +106,9 @@ for (i in 1:nrow(df)) {
 df$pl_vs_lnorm_stat <- test_stats
 df$lnorm_vs_gamma_stat <- vuongst
 
-# The values reported in the paper are stored in
-# results/merge_01_vuong_pvalue_main.rda. SANN is stochastic and the stored
-# results were computed without a fixed seed, so lnorm_vs_gamma_stat differs
-# slightly from the paper; the output is saved under a different name.
-save(df, file = here("results", "merge_01_vuong_pvalue_rerun.rda"))
+# These are the values shown in Figures 5 and 6, drawn by 05_Plot_Heatmaps.R.
+# SANN is stochastic, so the seed above fixes the results.
+save(df, file = here("results", "vuong_pvalue.rda"))
 
 df$pl_vs_lnorm_stat |> summary()
 df$lnorm_vs_gamma_stat |> summary()

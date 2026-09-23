@@ -3,12 +3,8 @@ i_am("r_analysis/script/04_Powerlaw_Bootstrap.R")
 library(poweRlaw)
 
 # Power-law goodness-of-fit test for the upper tail (Clauset et al., 2009).
-# The p-values reported in the paper are stored in
-# results/mergedata_01_main_pvalue_toward_powerlaw.rda.
-# This script recomputes them and saves the output under a different name
-# so that the stored results are not overwritten.
-# Note: bootstrap_p() is stochastic, and the stored results were computed
-# without a fixed seed, so recomputed values differ slightly from the paper.
+# These are the p-values reported in Section 4 and shown by 05_Plot_Heatmaps.R.
+# bootstrap_p() is stochastic, so the seed below fixes the results.
 # Runtime: about 1 hour in total.
 
 load(file = here("mergedf_01.rda"))  # created by 02_Fitting.R
@@ -36,4 +32,4 @@ for (i in 1:nrow(df)) {
 
 df$p_value <- p_values
 
-save(df, file = here("results", "powerlaw_pvalue_rerun.rda"))
+save(df, file = here("results", "powerlaw_bootstrap.rda"))

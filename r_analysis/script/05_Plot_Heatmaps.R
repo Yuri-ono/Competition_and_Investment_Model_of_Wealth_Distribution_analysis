@@ -3,18 +3,12 @@ i_am("r_analysis/script/05_Plot_Heatmaps.R")
 library(dplyr)
 library(ggplot2)
 
-# Heatmaps of the goodness-of-fit test results. The stored results reported in
-# the paper are used if they exist in results/; otherwise the results
-# recomputed by 03_Goodness_of_Fit.R and 04_Powerlaw_Bootstrap.R are used.
-#   stored                                        recomputed
-#   merge_01_vuong_pvalue_main.rda                merge_01_vuong_pvalue_rerun.rda  (Figures 5 and 6)
-#   mergedata_01_main_pvalue_toward_powerlaw.rda  powerlaw_pvalue_rerun.rda        (power-law p-values)
+# Heatmaps of the goodness-of-fit test results computed by
+# 03_Goodness_of_Fit.R (results/vuong_pvalue.rda, Figures 5 and 6) and
+# 04_Powerlaw_Bootstrap.R (results/powerlaw_bootstrap.rda, power-law p-values).
 
-load_results <- function(stored, rerun) {
-  path <- here("results", stored)
-  if (!file.exists(path)) path <- here("results", rerun)
-  message("Using ", basename(path))
-  load(path)
+load_results <- function(file) {
+  load(here("results", file))
   df
 }
 
@@ -40,7 +34,7 @@ plot_heatmap <- function(df, value) {
 
 ###Vuong test----------------------------
 
-df <- load_results("merge_01_vuong_pvalue_main.rda", "merge_01_vuong_pvalue_rerun.rda")
+df <- load_results("vuong_pvalue.rda")
 
 # Figure 5: power-law vs log-normal for the upper tail (x >= xmin)
 # p < 0.1 favors power-law, p > 0.9 favors log-normal
@@ -48,8 +42,7 @@ plot_heatmap(df, "pl_vs_lnorm_stat")
 ggsave(here("results", "Fig5_vuong_pl_vs_lnorm.pdf"), width = 7, height = 7, units = "in")
 df$pl_vs_lnorm_stat |> summary()
 
-# Figure 6: gamma vs log-normal for the bulk (x < xmin); observations
-# x >= xmin are right-censored at their observed values (03_Goodness_of_Fit.R)
+# Figure 6: gamma vs log-normal for the bulk (x < xmin, right-censored at xmin)
 # p < 0.1 favors log-normal, p > 0.9 favors gamma
 plot_heatmap(df, "lnorm_vs_gamma_stat")
 ggsave(here("results", "Fig6_vuong_lnorm_vs_gamma.pdf"), width = 7, height = 7, units = "in")
@@ -57,7 +50,7 @@ df$lnorm_vs_gamma_stat |> summary()
 
 ###Power-law bootstrap p-value----------------------------
 
-df <- load_results("mergedata_01_main_pvalue_toward_powerlaw.rda", "powerlaw_pvalue_rerun.rda")
+df <- load_results("powerlaw_bootstrap.rda")
 
 df <- df %>%
   mutate(p_over_0_1 = ifelse(p_value >= 0.1, "p >= 0.1", "p < 0.1"),
