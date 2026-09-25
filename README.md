@@ -75,6 +75,8 @@ Replication code and data for:
   - ggplot2 4.0.0
   - arrow 22.0.0
 
+Tested on macOS (Apple silicon).
+
 ## Usage
 
 ### Simulation (Julia)
@@ -85,7 +87,7 @@ julia +1.10.6 --project=julia_simulation -e 'using Pkg; Pkg.instantiate()'
 
 Run `julia_simulation/code/01_run_simulation.ipynb` with this environment
 (a Julia 1.10.6 kernel from [IJulia](https://github.com/JuliaLang/IJulia.jl) is required).
-Running the "Data Generate" section overwrites `data/sorted_mean_incomes_99.feather`.
+Running the "Data Generate" section overwrites `data/sorted_mean_incomes_99.feather` with identical data.
 
 ### Analysis (R)
 
@@ -100,16 +102,8 @@ source("r_analysis/script/04_Powerlaw_Bootstrap.R")
 source("r_analysis/script/05_Plot_Heatmaps.R")
 ```
 
-Figures are saved to `results/`.
-
-## Notes on reproducibility
-
-- In the bulk comparison (Figure 6), observations with x >= xmin are right-censored at xmin,
-  so that they contribute only the information that the value is at least xmin.
-- The fits in `03` (SANN) and the bootstrap in `04` are stochastic, but both scripts fix the seed,
-  so they reproduce the values in the figures with the R and package versions pinned here.
-- `data/sorted_mean_incomes_99.feather` is the simulation output used in the paper.
-  Running the notebook with Julia 1.10.6 regenerates it exactly (verified on macOS, Apple silicon).
+Figures are saved to `results/` and the test results to `data/`.
+The scripts fix their random seeds, so they reproduce the stored results exactly.
 
 ## License
 
