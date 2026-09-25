@@ -4,7 +4,6 @@ library(poweRlaw)
 
 # Power-law goodness-of-fit test for the upper tail (Clauset et al., 2009).
 # These are the p-values reported in Section 4 and shown by 05_Plot_Heatmaps.R.
-# Runtime: about 1 hour in total.
 
 load(file = here("data", "sorted_mean_incomes_99.rda"))  # created by 02_Fitting.R
 
