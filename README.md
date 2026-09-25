@@ -44,27 +44,20 @@ Replication code and data for:
 
 ### Figures (`results/`)
 
-| Paper | File | Created by |
-| --- | --- | --- |
-| Figure 1 | `Fig1_gini_convergence.pdf` | `01_run_simulation.ipynb` |
-| Figure 2(a) | `Fig2a_mean.pdf` | `01_run_simulation.ipynb` |
-| Figure 2(b) | `Fig2b_gini.pdf` | `01_run_simulation.ipynb` |
-| Figure 3(a) | `Fig3a_ccdf_gamma.pdf` (α = 0.0) | `02_Fitting.R` |
-| Figure 3(b) | `Fig3b_ccdf_lnorm.pdf` (α = 1.0) | `02_Fitting.R` |
-| Figure 4(a) | `Fig4a_ccdf_alpha0.2.pdf` | `02_Fitting.R` |
-| Figure 4(b) | `Fig4b_ccdf_alpha0.4.pdf` | `02_Fitting.R` |
-| Figure 4(c) | `Fig4c_ccdf_alpha0.6.pdf` | `02_Fitting.R` |
-| Figure 4(d) | `Fig4d_ccdf_alpha0.8.pdf` | `02_Fitting.R` |
-| Figure 5 | `Fig5_vuong_pl_vs_lnorm.pdf` | `05_Plot_Heatmaps.R` |
-| Figure 6 | `Fig6_vuong_lnorm_vs_gamma.pdf` | `05_Plot_Heatmaps.R` |
-| Section 4 (text) | `powerlaw_pvalue.pdf` | `05_Plot_Heatmaps.R` |
-
-- `powerlaw_pvalue.pdf` shows the bootstrap p-values of the power-law goodness-of-fit test,
-  which are reported in the text of Section 4 but not shown as a figure in the paper.
-- Figure 3 shows maximum likelihood fits, and Figure 4 shows moment-matching fits (`method = "mme"`).
-- In Figure 4(d), wealth is divided by a power of ten before fitting and plotting when its maximum
-  has more than eight digits (ω >= 0.4), so the x-axis of these panels is not on the original scale.
-  This shifts the curves but does not change their shape.
+| Paper | File | Description | Created by |
+| --- | --- | --- | --- |
+| Figure 1 | `Fig1_gini_convergence.pdf` | Gini coefficient over time for each (ω, α), with α = 1.0 highlighted | `01_run_simulation.ipynb` |
+| Figure 2(a) | `Fig2a_mean.pdf` | Mean wealth (T = 10) | `01_run_simulation.ipynb` |
+| Figure 2(b) | `Fig2b_gini.pdf` | Gini coefficient (T = 100) | `01_run_simulation.ipynb` |
+| Figure 3(a) | `Fig3a_ccdf_gamma.pdf` | CCDF and gamma fits (α = 0.0) | `02_Fitting.R` |
+| Figure 3(b) | `Fig3b_ccdf_lnorm.pdf` | CCDF and log-normal fits (α = 1.0) | `02_Fitting.R` |
+| Figure 4(a) | `Fig4a_ccdf_alpha0.2.pdf` | CCDF with gamma and log-normal fits (α = 0.2) | `02_Fitting.R` |
+| Figure 4(b) | `Fig4b_ccdf_alpha0.4.pdf` | CCDF with gamma and log-normal fits (α = 0.4) | `02_Fitting.R` |
+| Figure 4(c) | `Fig4c_ccdf_alpha0.6.pdf` | CCDF with gamma and log-normal fits (α = 0.6) | `02_Fitting.R` |
+| Figure 4(d) | `Fig4d_ccdf_alpha0.8.pdf` | CCDF with gamma and log-normal fits (α = 0.8) | `02_Fitting.R` |
+| Figure 5 | `Fig5_vuong_pl_vs_lnorm.pdf` | Vuong test p-values, power-law vs. log-normal for the upper tail | `05_Plot_Heatmaps.R` |
+| Figure 6 | `Fig6_vuong_lnorm_vs_gamma.pdf` | Vuong test p-values, gamma vs. log-normal for the bulk | `05_Plot_Heatmaps.R` |
+| Section 4 (text) | `powerlaw_pvalue.pdf` | Bootstrap p-values of the power-law goodness-of-fit test for the upper tail | `05_Plot_Heatmaps.R` |
 
 ## Requirements
 
@@ -87,7 +80,6 @@ julia +1.10.6 --project=julia_simulation -e 'using Pkg; Pkg.instantiate()'
 
 Run `julia_simulation/code/01_run_simulation.ipynb` with this environment
 (a Julia 1.10.6 kernel from [IJulia](https://github.com/JuliaLang/IJulia.jl) is required).
-Running the "Data Generate" section overwrites `data/sorted_mean_incomes_99.feather` with identical data.
 
 ### Analysis (R)
 
@@ -103,7 +95,6 @@ source("r_analysis/script/05_Plot_Heatmaps.R")
 ```
 
 Figures are saved to `results/` and the test results to `data/`.
-The scripts fix their random seeds, so they reproduce the stored results exactly.
 
 ## License
 
