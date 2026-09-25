@@ -49,12 +49,12 @@ The `.rda` files in `results/` contain the same data (`mean_income`) and the tes
 | Figure 1 | `Fig1_gini_convergence.pdf` | `01_run_simulation.ipynb` |
 | Figure 2(a) | `Fig2a_mean.pdf` | `01_run_simulation.ipynb` |
 | Figure 2(b) | `Fig2b_gini.pdf` | `01_run_simulation.ipynb` |
-| Figure 3(a) | `CCDF_gamma.pdf` (α = 0.0) | `02_Fitting.R` |
-| Figure 3(b) | `CCDF_lnorm.pdf` (α = 1.0) | `02_Fitting.R` |
-| Figure 4(a) | `CCDF_gl_2.pdf` (α = 0.2) | `02_Fitting.R` |
-| Figure 4(b) | `CCDF_gl_4.pdf` (α = 0.4) | `02_Fitting.R` |
-| Figure 4(c) | `CCDF_gl_6.pdf` (α = 0.6) | `02_Fitting.R` |
-| Figure 4(d) | `CCDF_gl_8.pdf` (α = 0.8) | `02_Fitting.R` |
+| Figure 3(a) | `Fig3a_ccdf_gamma.pdf` (α = 0.0) | `02_Fitting.R` |
+| Figure 3(b) | `Fig3b_ccdf_lnorm.pdf` (α = 1.0) | `02_Fitting.R` |
+| Figure 4(a) | `Fig4a_ccdf_alpha0.2.pdf` | `02_Fitting.R` |
+| Figure 4(b) | `Fig4b_ccdf_alpha0.4.pdf` | `02_Fitting.R` |
+| Figure 4(c) | `Fig4c_ccdf_alpha0.6.pdf` | `02_Fitting.R` |
+| Figure 4(d) | `Fig4d_ccdf_alpha0.8.pdf` | `02_Fitting.R` |
 | Figure 5 | `Fig5_vuong_pl_vs_lnorm.pdf` | `05_Plot_Heatmaps.R` |
 | Figure 6 | `Fig6_vuong_lnorm_vs_gamma.pdf` | `05_Plot_Heatmaps.R` |
 | Section 4 (text) | `powerlaw_pvalue.pdf` | `05_Plot_Heatmaps.R` |

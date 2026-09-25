@@ -120,7 +120,7 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
   )
 
 ggsave(
-  here("results", "CCDF_gamma.pdf"),
+  here("results", "Fig3a_ccdf_gamma.pdf"),
   width = 12,
   height = 10,
   units = "in"
@@ -206,7 +206,7 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
   )
 
 ggsave(
-  here("results", "CCDF_lnorm.pdf"),
+  here("results", "Fig3b_ccdf_lnorm.pdf"),
   width = 12,
   height = 10,
   units = "in"
@@ -553,7 +553,7 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
 
 a2
 ggsave(
-  here("results", "CCDF_gl_2.pdf"),
+  here("results", "Fig4a_ccdf_alpha0.2.pdf"),
   plot = a2,
   width = 12,
   height = 10,
@@ -561,7 +561,7 @@ ggsave(
 )
 a4
 ggsave(
-  here("results", "CCDF_gl_4.pdf"),
+  here("results", "Fig4b_ccdf_alpha0.4.pdf"),
   plot = a4,
   width = 12,
   height = 10,
@@ -569,7 +569,7 @@ ggsave(
 )
 a6
 ggsave(
-  here("results", "CCDF_gl_6.pdf"),
+  here("results", "Fig4c_ccdf_alpha0.6.pdf"),
   plot = a6,
   width = 12,
   height = 10,
@@ -577,7 +577,7 @@ ggsave(
 )
 a8
 ggsave(
-  here("results", "CCDF_gl_8.pdf"),
+  here("results", "Fig4d_ccdf_alpha0.8.pdf"),
   plot = a8,
   width = 12,
   height = 10,
