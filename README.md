@@ -2,7 +2,7 @@
 
 Replication code and data for:
 
-> [AUTHORS] ([YEAR]). Competition and investment model of wealth distribution. *The Journal of Mathematical Sociology*. [DOI]
+> Ono, Y., & Ishida, A. ([YEAR]). Competition and investment model of wealth distribution. *The Journal of Mathematical Sociology*. [DOI]
 
 ## Files
 
@@ -26,6 +26,7 @@ Replication code and data for:
 | File | Description |
 | --- | --- |
 | `data/sorted_mean_incomes_99.feather` | Simulated wealth distributions for each (ω, α) |
+| `mergedf_01.rda` | The same data in R format (`mean_income`), created by `02_Fitting.R` and used by `03` and `04` |
 | `results/vuong_pvalue.rda` | Vuong test results (Figures 5 and 6), created by `03_Goodness_of_Fit.R` |
 | `results/powerlaw_bootstrap.rda` | Power-law bootstrap p-values, created by `04_Powerlaw_Bootstrap.R` |
 
@@ -40,6 +41,30 @@ The `.rda` files in `results/` contain the same data (`mean_income`) and the tes
 - `pl_vs_lnorm_stat`: One-sided p-value of the Vuong test, power-law vs. log-normal (Figure 5)
 - `lnorm_vs_gamma_stat`: One-sided p-value of the Vuong test, gamma vs. log-normal (Figure 6)
 - `p_value`: Bootstrap p-value of the power-law goodness-of-fit test
+
+### Figures (`results/`)
+
+| Paper | File | Created by |
+| --- | --- | --- |
+| Figure 1 | `Fig1_gini_convergence.pdf` | `01_run_simulation.ipynb` |
+| Figure 2(a) | `Fig2a_mean.pdf` | `01_run_simulation.ipynb` |
+| Figure 2(b) | `Fig2b_gini.pdf` | `01_run_simulation.ipynb` |
+| Figure 3(a) | `CCDF_gamma.pdf` (α = 0.0) | `02_Fitting.R` |
+| Figure 3(b) | `CCDF_lnorm.pdf` (α = 1.0) | `02_Fitting.R` |
+| Figure 4(a) | `CCDF_gl_2.pdf` (α = 0.2) | `02_Fitting.R` |
+| Figure 4(b) | `CCDF_gl_4.pdf` (α = 0.4) | `02_Fitting.R` |
+| Figure 4(c) | `CCDF_gl_6.pdf` (α = 0.6) | `02_Fitting.R` |
+| Figure 4(d) | `CCDF_gl_8.pdf` (α = 0.8) | `02_Fitting.R` |
+| Figure 5 | `Fig5_vuong_pl_vs_lnorm.pdf` | `05_Plot_Heatmaps.R` |
+| Figure 6 | `Fig6_vuong_lnorm_vs_gamma.pdf` | `05_Plot_Heatmaps.R` |
+| Section 4 (text) | `powerlaw_pvalue.pdf` | `05_Plot_Heatmaps.R` |
+
+- `powerlaw_pvalue.pdf` shows the bootstrap p-values of the power-law goodness-of-fit test,
+  which are reported in the text of Section 4 but not shown as a figure in the paper.
+- Figure 3 shows maximum likelihood fits, and Figure 4 shows moment-matching fits (`method = "mme"`).
+- In Figure 4(d), wealth is divided by a power of ten before fitting and plotting when its maximum
+  has more than eight digits (ω >= 0.4), so the x-axis of these panels is not on the original scale.
+  This shifts the curves but does not change their shape.
 
 ## Requirements
 
@@ -84,7 +109,7 @@ Figures are saved to `results/`.
 - The fits in `03` (SANN) and the bootstrap in `04` are stochastic, but both scripts fix the seed,
   so they reproduce the values in the figures with the R and package versions pinned here.
 - `data/sorted_mean_incomes_99.feather` is the simulation output used in the paper.
-  Re-running the simulation reproduces its statistical properties, but not the exact values.
+  Running the notebook with Julia 1.10.6 regenerates it exactly (verified on macOS, Apple silicon).
 
 ## License
 
