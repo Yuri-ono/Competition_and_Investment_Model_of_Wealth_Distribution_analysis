@@ -58,7 +58,7 @@ vuong <- function(censdata,ln_fit,gamma_fit){
   # positive values favor the log-normal distribution
 }
 
-load(file = here("mergedf_01.rda"))
+load(file = here("data", "sorted_mean_incomes_99.rda"))
 
 set.seed(1)
 

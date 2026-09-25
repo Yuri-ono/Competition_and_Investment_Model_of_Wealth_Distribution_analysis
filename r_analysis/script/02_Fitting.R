@@ -42,9 +42,9 @@ df$mean_incomes <- lapply(df$mean_incomes, fromJSON)  # convert JSON strings to 
 df$mean_incomes
 df <- df %>%
   rename(mean_income = mean_incomes)
-save(df,file = here("mergedf_01.rda"))
+save(df,file = here("data", "sorted_mean_incomes_99.rda"))
 
-load(file = here("mergedf_01.rda"))
+load(file = here("data", "sorted_mean_incomes_99.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 0.0)
 # Number of series (one per ω)
@@ -128,7 +128,7 @@ ggsave(
 
 ###1.0##################
 # Load and filter the data
-load(file = here("mergedf_01.rda"))
+load(file = here("data", "sorted_mean_incomes_99.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 1.0)
 
@@ -214,7 +214,7 @@ ggsave(
 
 ###0.2----------------------------
 
-load(file = here("mergedf_01.rda"))
+load(file = here("data", "sorted_mean_incomes_99.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 0.2)
 

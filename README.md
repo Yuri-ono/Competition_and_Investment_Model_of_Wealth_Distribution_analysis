@@ -26,7 +26,7 @@ Replication code and data for:
 | File | Description |
 | --- | --- |
 | `data/sorted_mean_incomes_99.feather` | Simulated wealth distributions for each (ω, α) |
-| `mergedf_01.rda` | The same data in R format (`mean_income`), created by `02_Fitting.R` and used by `03` and `04` |
+| `data/sorted_mean_incomes_99.rda` | The same data in R format (`mean_income`), created by `02_Fitting.R` and used by `03` and `04` |
 | `results/vuong_pvalue.rda` | Vuong test results (Figures 5 and 6), created by `03_Goodness_of_Fit.R` |
 | `results/powerlaw_bootstrap.rda` | Power-law bootstrap p-values, created by `04_Powerlaw_Bootstrap.R` |
 

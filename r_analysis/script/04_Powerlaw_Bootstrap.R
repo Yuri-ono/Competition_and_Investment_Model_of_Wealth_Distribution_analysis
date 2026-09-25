@@ -7,7 +7,7 @@ library(poweRlaw)
 # bootstrap_p() is stochastic, so the seed below fixes the results.
 # Runtime: about 1 hour in total.
 
-load(file = here("mergedf_01.rda"))  # created by 02_Fitting.R
+load(file = here("data", "sorted_mean_incomes_99.rda"))  # created by 02_Fitting.R
 
 set.seed(1)
 
