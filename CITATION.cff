@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the article below."
+title: "Competition and Investment Model of Wealth Distribution: Replication Code and Data"
+abstract: "Julia and R code and simulated data that reproduce the figures and test results of Ono and Ishida, Competition and Investment Model of Wealth Distribution, The Journal of Mathematical Sociology."
+authors:
+  - family-names: Ono
+    given-names: Yuri
+    orcid: "https://orcid.org/0009-0004-3494-7339"
+  - family-names: Ishida
+    given-names: A.
+license: MIT
+repository-code: "https://github.com/Yuri-ono/Competition_and_Investment_Model_of_Wealth_Distribution_analysis"
+keywords:
+  - wealth distribution
+  - gamma distribution
+  - log-normal distribution
+  - power-law
+preferred-citation:
+  type: article
+  title: "Competition and Investment Model of Wealth Distribution"
+  authors:
+    - family-names: Ono
+      given-names: Yuri
+      orcid: "https://orcid.org/0009-0004-3494-7339"
+    - family-names: Ishida
+      given-names: A.
+  journal: "The Journal of Mathematical Sociology"
