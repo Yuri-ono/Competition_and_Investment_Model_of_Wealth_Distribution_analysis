@@ -9,8 +9,6 @@ library(poweRlaw)
 
 load(file = here("data", "sorted_mean_incomes_99.rda"))  # created by 02_Fitting.R
 
-set.seed(1)
-
 p_values <- numeric(nrow(df))
 for (i in 1:nrow(df)) {
   data <- df$mean_income[[i]]
@@ -26,7 +24,7 @@ for (i in 1:nrow(df)) {
   pl_model$setXmin(est)
 
   # Bootstrap p-value (p < 0.1 rejects the power-law hypothesis)
-  booty <- bootstrap_p(pl_model)
+  booty <- bootstrap_p(pl_model, seed = 1)
   p_values[i] <- booty$p
 }
 
