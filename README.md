@@ -17,8 +17,8 @@ Replication code and data for:
 | File | Description | Figures |
 | --- | --- | --- |
 | `02_Fitting.R` | CCDF plots with gamma and log-normal fits | Figures 3, 4 |
-| `03_Goodness_of_Fit.R` | Vuong tests: power-law vs. log-normal for the upper tail, gamma vs. log-normal for the bulk (about 3 minutes) | Figures 5, 6 |
-| `04_Powerlaw_Bootstrap.R` | Power-law goodness-of-fit test with bootstrap p-values (about 1 hour) | Section 4 (text) |
+| `03_Goodness_of_Fit.R` | Vuong tests: power-law vs. log-normal for the upper tail, gamma vs. log-normal for the bulk | Figures 5, 6 |
+| `04_Powerlaw_Bootstrap.R` | Power-law goodness-of-fit test with bootstrap p-values | Section 4 (text) |
 | `05_Plot_Heatmaps.R` | Heatmaps of the test results | Figures 5, 6 |
 
 ### Data (`data/`)
