@@ -22,11 +22,8 @@ vuong <- function(censdata,ln_fit,gamma_fit){
     }
   }, censdata$left, censdata$right)
   
-  # Log-likelihoods
   galoglikelihoods <- log(pmax(likelihoods, .Machine$double.eps))
   
-  # Log-normal distribution
-  #ln_fit <- fitdistcens(censdata, "lnorm",optim.method = "SANN")
   meanlog <- ln_fit$estimate["meanlog"]
   sdlog   <- ln_fit$estimate["sdlog"]
   
@@ -45,7 +42,6 @@ vuong <- function(censdata,ln_fit,gamma_fit){
     }
   }, censdata$left, censdata$right)
   
-  # Log-likelihoods
   lnloglikelihoods <- log(pmax(likelihoods, .Machine$double.eps))
   
   # Vuong test statistic
@@ -62,7 +58,6 @@ load(file = here("data", "sorted_mean_incomes_99.rda"))
 
 set.seed(1)
 
-# Vectors to store the results
 test_stats <- numeric(nrow(df))
 vuongst <- numeric(nrow(df))
 
@@ -87,7 +82,6 @@ for (i in 1:nrow(df)) {
   
   # Vuong test: power-law vs. log-normal
   compd <- compare_distributions(pl_model, pl_model_ln)
-  #test_stats[i] <- compd$test_statistic
   test_stats[i] <- compd$p_one_sided
   
   # ---- Bulk of the distribution ----
@@ -102,7 +96,6 @@ for (i in 1:nrow(df)) {
 
   vuongst[i] <- 1 - pnorm(vuong(censdata, ln_fit, gamma_fit))
 }
-# Add the results as columns of df
 df$pl_vs_lnorm_stat <- test_stats
 df$lnorm_vs_gamma_stat <- vuongst
 

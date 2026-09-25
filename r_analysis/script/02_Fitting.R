@@ -1,11 +1,8 @@
-#load data
 library(here)
 i_am("r_analysis/script/02_Fitting.R")
 library(jsonlite)
-# fit data
 library(poweRlaw)
 library(fitdistrplus)
-# graphics
 library(dplyr)
 library(gridExtra)
 library(ggplot2)
@@ -13,7 +10,7 @@ library(tidyr)
 library(arrow)
 library(tibble)
 library(patchwork)
-library(purrr)  # for map and related functions
+library(purrr)
 
 # Plotting helpers
 plot_ccdf <- function(data) {
@@ -38,7 +35,7 @@ plot_ccdf_log_log <- function(data, title) {
 data_path <- here("data", "sorted_mean_incomes_99.feather")
 
 df <- read_feather(data_path)
-df$mean_incomes <- lapply(df$mean_incomes, fromJSON)  # convert JSON strings to lists
+df$mean_incomes <- lapply(df$mean_incomes, fromJSON)
 df$mean_incomes
 df <- df %>%
   rename(mean_income = mean_incomes)
@@ -47,10 +44,8 @@ save(df,file = here("data", "sorted_mean_incomes_99.rda"))
 load(file = here("data", "sorted_mean_incomes_99.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 0.0)
-# Number of series (one per ω)
 n_series <- length(df$mean_income)
 
-# Build the plotting data
 all_data <- map_dfr(1:n_series, function(i) {
   data <- df$mean_income[[i]]
   
@@ -66,21 +61,20 @@ all_data <- map_dfr(1:n_series, function(i) {
     Income = rep(sorted_data[1:length(sorted_data)], 2),
     CCDF = c(emp_ccdf[1:length(sorted_data)], gamma_ccdf[1:length(sorted_data)]),
     Type = rep(c("Simulated Data", "Gamma Fit"), each = length(sorted_data[1:length(sorted_data)])),
-    Index = df$ω[i]  # keep ω as a number
+    Index = df$ω[i]
   )
 })
 
-# Labels drawn in each panel
 label_data <- all_data %>%
   group_by(Index) %>%
   summarise(
-    Income = min(Income) * 1.2,  # place near the lower left with a small margin
+    Income = min(Income) * 1.2,
     CCDF = min(CCDF) * 1.2
   ) %>%
   mutate(Label = paste0("omega == ", Index))  # plotmath string for parse = TRUE
 
 ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
-  geom_line(size = 1.2) +  # slightly thicker lines
+  geom_line(size = 1.2) +
   scale_x_log10() +
   scale_y_log10() +
   facet_wrap(~ Index, ncol = 3, scales = "free_x") +
@@ -94,16 +88,16 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     "Simulated Data" = "solid",
     "Gamma Fit" = "dashed"
   )) +
-  theme_minimal(base_size = 12) +  # base font size
+  theme_minimal(base_size = 12) +
   theme(
     aspect.ratio = 4/5,
     legend.position = "bottom",
     strip.text = element_blank(),
-    text = element_text(size = 14),  # base text size
-    axis.title = element_text(size = 16, face = "bold"),  # large bold axis titles
-    axis.text = element_text(size = 12),  # axis tick labels
-    legend.text = element_text(size = 12),  # legend text
-    legend.title = element_blank()  # no legend title
+    text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank()
   ) +
   geom_label(
     data = label_data,
@@ -112,11 +106,11 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     inherit.aes = FALSE,
     hjust = 0,
     vjust = -3,
-    size = 6,         # larger label text
-    label.size = 0.7, # slightly thicker box border
+    size = 6,
+    label.size = 0.7,
     label.r = unit(0.15, "lines"),
-    fill = "white",   # white background
-    color = "black"   # black border
+    fill = "white",
+    color = "black"
   )
 
 ggsave(
@@ -127,19 +121,15 @@ ggsave(
 )
 
 ###1.0##################
-# Load and filter the data
 load(file = here("data", "sorted_mean_incomes_99.rda"))
 mergedf <- df
 df <- mergedf %>% filter(α == 1.0)
 
-# Number of series (one per ω)
 n_series <- length(df$mean_income)
 
-# Process each series
 all_data <- map_dfr(1:n_series, function(i) {
   data <- df$mean_income[[i]]
   
-  # Fit
   lnorm_fit <- fitdist(data, "lnorm", method = "mle")
   
   sorted_data <- sort(data)
@@ -148,25 +138,23 @@ all_data <- map_dfr(1:n_series, function(i) {
                            meanlog = lnorm_fit$estimate["meanlog"],
                            sdlog = lnorm_fit$estimate["sdlog"])
   
-  # Combine into a data frame
   data.frame(
     Income = rep(sorted_data[1:length(sorted_data)], 2),
     CCDF = c(emp_ccdf[1:length(sorted_data)], lnorm_ccdf[1:length(sorted_data)]),
     Type = rep(c("Simulated Data", "Log-Normal Fit"), each = length(sorted_data[1:length(sorted_data)])),
-    Index = df$ω[i]  # used for facets
+    Index = df$ω[i]
   )
 })
 
-# Labels drawn in each panel
 label_data <- all_data %>%
   group_by(Index) %>%
   summarise(
-    Income = min(Income) * 1.2,  # place near the lower left with a small margin
+    Income = min(Income) * 1.2,
     CCDF = min(CCDF) * 1.2
   ) %>%
   mutate(Label = paste0("omega == ", Index))  # plotmath string for parse = TRUE
 ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
-  geom_line(size = 1.2) +  # slightly thicker lines
+  geom_line(size = 1.2) +
   scale_x_log10() +
   scale_y_log10() +
   facet_wrap(~ Index, ncol = 3, scales = "free_x") +
@@ -180,16 +168,16 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     "Simulated Data" = "solid",
     "Log-Normal Fit" = "dotdash"
   )) +
-  theme_minimal(base_size = 12) +  # base font size
+  theme_minimal(base_size = 12) +
   theme(
     aspect.ratio = 4/5,
     legend.position = "bottom",
     strip.text = element_blank(),
-    text = element_text(size = 14),  # base text size
-    axis.title = element_text(size = 16, face = "bold"),  # large bold axis titles
-    axis.text = element_text(size = 12),  # axis tick labels
-    legend.text = element_text(size = 12),  # legend text
-    legend.title = element_blank()  # no legend title
+    text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank()
   ) +
   geom_label(
     data = label_data,
@@ -198,11 +186,11 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     inherit.aes = FALSE,
     hjust = 0,
     vjust = -3,
-    size = 6,         # larger label text
-    label.size = 0.7, # slightly thicker box border
+    size = 6,
+    label.size = 0.7,
     label.r = unit(0.15, "lines"),
-    fill = "white",   # white background
-    color = "black"   # black border
+    fill = "white",
+    color = "black"
   )
 
 ggsave(
@@ -225,10 +213,8 @@ all_data <- map_dfr(1:n_series, function(i) {
   
   sorted_data <- sort(data)
   
-  # Empirical CCDF
   emp_ccdf <- 1 - ecdf(data)(sorted_data)
   
-  # Fitting
   gamma_fit <- fitdist(data, "gamma", method = "mme")
   gamma_ccdf <- 1 - pgamma(sorted_data,
                            shape = gamma_fit$estimate["shape"],
@@ -247,16 +233,15 @@ all_data <- map_dfr(1:n_series, function(i) {
   )
 })
 
-# Labels drawn in each panel
 label_data <- all_data %>%
   group_by(Index) %>%
   summarise(
-    Income = min(Income) * 1.2,  # place near the lower left with a small margin
+    Income = min(Income) * 1.2,
     CCDF = min(CCDF) * 1.2
   ) %>%
   mutate(Label = paste0("omega == ", Index))  # plotmath string for parse = TRUE
 ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
-  geom_line(size = 1.2) +  # slightly thicker lines
+  geom_line(size = 1.2) +
   scale_x_log10() +
   scale_y_log10() +
   facet_wrap(~ Index, ncol = 3, scales = "free_x") +
@@ -272,16 +257,16 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     "Gamma Fit" = "dashed",
     "Log-Normal Fit" = "dotdash"
   )) +
-  theme_minimal(base_size = 12) +  # base font size
+  theme_minimal(base_size = 12) +
   theme(
     aspect.ratio = 4/5,
     legend.position = "bottom",
     strip.text = element_blank(),
-    text = element_text(size = 14),  # base text size
-    axis.title = element_text(size = 16, face = "bold"),  # large bold axis titles
-    axis.text = element_text(size = 12),  # axis tick labels
-    legend.text = element_text(size = 12),  # legend text
-    legend.title = element_blank()  # no legend title
+    text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank()
   ) +
   geom_label(
     data = label_data,
@@ -290,11 +275,11 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     inherit.aes = FALSE,
     hjust = 0,
     vjust = -3,
-    size = 6,         # larger label text
-    label.size = 0.7, # slightly thicker box border
+    size = 6,
+    label.size = 0.7,
     label.r = unit(0.15, "lines"),
-    fill = "white",   # white background
-    color = "black"   # black border
+    fill = "white",
+    color = "black"
   ) -> a2
 
 ###0.4----------------------------
@@ -308,10 +293,8 @@ all_data <- map_dfr(1:n_series, function(i) {
   
   sorted_data <- sort(data)
   
-  # Empirical CCDF
   emp_ccdf <- 1 - ecdf(data)(sorted_data)
   
-  # Fitting
   gamma_fit <- fitdist(data, "gamma", method = "mme")
   gamma_ccdf <- 1 - pgamma(sorted_data,
                            shape = gamma_fit$estimate["shape"],
@@ -330,16 +313,15 @@ all_data <- map_dfr(1:n_series, function(i) {
   )
 })
 
-# Labels drawn in each panel
 label_data <- all_data %>%
   group_by(Index) %>%
   summarise(
-    Income = min(Income) * 1.2,  # place near the lower left with a small margin
+    Income = min(Income) * 1.2,
     CCDF = min(CCDF) * 1.2
   ) %>%
   mutate(Label = paste0("omega == ", Index))  # plotmath string for parse = TRUE
 ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
-  geom_line(size = 1.2) +  # slightly thicker lines
+  geom_line(size = 1.2) +
   scale_x_log10() +
   scale_y_log10() +
   facet_wrap(~ Index, ncol = 3, scales = "free_x") +
@@ -355,16 +337,16 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     "Gamma Fit" = "dashed",
     "Log-Normal Fit" = "dotdash"
   )) +
-  theme_minimal(base_size = 12) +  # base font size
+  theme_minimal(base_size = 12) +
   theme(
     aspect.ratio = 4/5,
     legend.position = "bottom",
     strip.text = element_blank(),
-    text = element_text(size = 14),  # base text size
-    axis.title = element_text(size = 16, face = "bold"),  # large bold axis titles
-    axis.text = element_text(size = 12),  # axis tick labels
-    legend.text = element_text(size = 12),  # legend text
-    legend.title = element_blank()  # no legend title
+    text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank()
   ) +
   geom_label(
     data = label_data,
@@ -373,11 +355,11 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     inherit.aes = FALSE,
     hjust = 0,
     vjust = -3,
-    size = 6,         # larger label text
-    label.size = 0.7, # slightly thicker box border
+    size = 6,
+    label.size = 0.7,
     label.r = unit(0.15, "lines"),
-    fill = "white",   # white background
-    color = "black"   # black border
+    fill = "white",
+    color = "black"
   ) -> a4
 
 ###0.6----------------------------
@@ -391,10 +373,8 @@ all_data <- map_dfr(1:n_series, function(i) {
   
   sorted_data <- sort(data)
   
-  # Empirical CCDF
   emp_ccdf <- 1 - ecdf(data)(sorted_data)
   
-  # Fitting
   gamma_fit <- fitdist(data, "gamma", method = "mme")
   gamma_ccdf <- 1 - pgamma(sorted_data,
                            shape = gamma_fit$estimate["shape"],
@@ -413,16 +393,15 @@ all_data <- map_dfr(1:n_series, function(i) {
   )
 })
 
-# Labels drawn in each panel
 label_data <- all_data %>%
   group_by(Index) %>%
   summarise(
-    Income = min(Income) * 1.2,  # place near the lower left with a small margin
+    Income = min(Income) * 1.2,
     CCDF = min(CCDF) * 1.2
   ) %>%
   mutate(Label = paste0("omega == ", Index))  # plotmath string for parse = TRUE
 ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
-  geom_line(size = 1.2) +  # slightly thicker lines
+  geom_line(size = 1.2) +
   scale_x_log10() +
   scale_y_log10() +
   facet_wrap(~ Index, ncol = 3, scales = "free_x") +
@@ -438,16 +417,16 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     "Gamma Fit" = "dashed",
     "Log-Normal Fit" = "dotdash"
   )) +
-  theme_minimal(base_size = 12) +  # base font size
+  theme_minimal(base_size = 12) +
   theme(
     aspect.ratio = 4/5,
     legend.position = "bottom",
     strip.text = element_blank(),
-    text = element_text(size = 14),  # base text size
-    axis.title = element_text(size = 16, face = "bold"),  # large bold axis titles
-    axis.text = element_text(size = 12),  # axis tick labels
-    legend.text = element_text(size = 12),  # legend text
-    legend.title = element_blank()  # no legend title
+    text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank()
   ) +
   geom_label(
     data = label_data,
@@ -456,11 +435,11 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     inherit.aes = FALSE,
     hjust = 0,
     vjust = -3,
-    size = 6,         # larger label text
-    label.size = 0.7, # slightly thicker box border
+    size = 6,
+    label.size = 0.7,
     label.r = unit(0.15, "lines"),
-    fill = "white",   # white background
-    color = "black"   # black border
+    fill = "white",
+    color = "black"
   ) -> a6
 
 ###0.8----------------------------
@@ -479,10 +458,8 @@ all_data <- map_dfr(1:n_series, function(i) {
   
   sorted_data <- sort(data)
   
-  # Empirical CCDF
   emp_ccdf <- 1 - ecdf(data)(sorted_data)
   
-  # Fitting
   gamma_fit <- fitdist(data, "gamma", method = "mme")
   gamma_ccdf <- 1 - pgamma(sorted_data,
                            shape = gamma_fit$estimate["shape"],
@@ -501,16 +478,15 @@ all_data <- map_dfr(1:n_series, function(i) {
   )
 })
 
-# Labels drawn in each panel
 label_data <- all_data %>%
   group_by(Index) %>%
   summarise(
-    Income = min(Income) * 1.2,  # place near the lower left with a small margin
+    Income = min(Income) * 1.2,
     CCDF = min(CCDF) * 1.2
   ) %>%
   mutate(Label = paste0("omega == ", Index))  # plotmath string for parse = TRUE
 ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
-  geom_line(size = 1.2) +  # slightly thicker lines
+  geom_line(size = 1.2) +
   scale_x_log10() +
   scale_y_log10() +
   facet_wrap(~ Index, ncol = 3, scales = "free_x") +
@@ -526,16 +502,16 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     "Gamma Fit" = "dashed",
     "Log-Normal Fit" = "dotdash"
   )) +
-  theme_minimal(base_size = 12) +  # base font size
+  theme_minimal(base_size = 12) +
   theme(
     aspect.ratio = 4/5,
     legend.position = "bottom",
     strip.text = element_blank(),
-    text = element_text(size = 14),  # base text size
-    axis.title = element_text(size = 16, face = "bold"),  # large bold axis titles
-    axis.text = element_text(size = 12),  # axis tick labels
-    legend.text = element_text(size = 12),  # legend text
-    legend.title = element_blank()  # no legend title
+    text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank()
   ) +
   geom_label(
     data = label_data,
@@ -544,11 +520,11 @@ ggplot(all_data, aes(x = Income, y = CCDF, color = Type, linetype = Type)) +
     inherit.aes = FALSE,
     hjust = 0,
     vjust = -3,
-    size = 6,         # larger label text
-    label.size = 0.7, # slightly thicker box border
+    size = 6,
+    label.size = 0.7,
     label.r = unit(0.15, "lines"),
-    fill = "white",   # white background
-    color = "black"   # black border
+    fill = "white",
+    color = "black"
   ) -> a8
 
 a2
