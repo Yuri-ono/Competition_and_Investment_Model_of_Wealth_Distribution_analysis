@@ -1,33 +1,11 @@
 library(here)
 i_am("r_analysis/script/02_Fitting.R")
 library(jsonlite)
-library(poweRlaw)
 library(fitdistrplus)
 library(dplyr)
-library(gridExtra)
 library(ggplot2)
-library(tidyr)
 library(arrow)
-library(tibble)
-library(patchwork)
 library(purrr)
-
-# Plotting helpers
-plot_ccdf <- function(data) {
-  ggplot(data.frame(x = data), aes(x = x, y = 1 - ecdf(x)(x))) +
-    geom_point() +
-    scale_y_continuous(trans = "log10", breaks = 10^(0:-10)) +
-    labs(x = "Income", y = "CCDF (1 - CDF)") +
-    theme_minimal()
-}
-plot_ccdf_log_log <- function(data, title) {
-  ggplot(data.frame(x = data), aes(x = x, y = 1 - ecdf(x)(x))) +
-    geom_point() +
-    scale_x_continuous(trans = "log10", breaks = 10^(0:10))+
-    scale_y_continuous(trans = "log10", breaks = 10^(0:-10))+
-    labs(x = "Income", y = "CCDF (1 - CDF)") +
-    theme_minimal()
-}
 
 ######################
 ####----Data----####
@@ -36,7 +14,6 @@ data_path <- here("data", "sorted_mean_incomes_99.feather")
 
 df <- read_feather(data_path)
 df$mean_incomes <- lapply(df$mean_incomes, fromJSON)
-df$mean_incomes
 df <- df %>%
   rename(mean_income = mean_incomes)
 save(df,file = here("data", "sorted_mean_incomes_99.rda"))
