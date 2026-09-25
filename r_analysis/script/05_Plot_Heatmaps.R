@@ -4,11 +4,11 @@ library(dplyr)
 library(ggplot2)
 
 # Heatmaps of the goodness-of-fit test results computed by
-# 03_Goodness_of_Fit.R (results/vuong_pvalue.rda, Figures 5 and 6) and
-# 04_Powerlaw_Bootstrap.R (results/powerlaw_bootstrap.rda, power-law p-values).
+# 03_Goodness_of_Fit.R (data/vuong_pvalue.rda, Figures 5 and 6) and
+# 04_Powerlaw_Bootstrap.R (data/powerlaw_bootstrap.rda, power-law p-values).
 
 load_results <- function(file) {
-  load(here("results", file))
+  load(here("data", file))
   df
 }
 

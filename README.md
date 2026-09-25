@@ -21,22 +21,22 @@ Replication code and data for:
 | `04_Powerlaw_Bootstrap.R` | Power-law goodness-of-fit test with bootstrap p-values (about 1 hour) | Section 4 (text) |
 | `05_Plot_Heatmaps.R` | Heatmaps of the test results | Figures 5, 6 |
 
-### Data (`data/`, `results/`)
+### Data (`data/`)
 
 | File | Description |
 | --- | --- |
-| `data/sorted_mean_incomes_99.feather` | Simulated wealth distributions for each (ω, α) |
-| `data/sorted_mean_incomes_99.rda` | The same data in R format (`mean_income`), created by `02_Fitting.R` and used by `03` and `04` |
-| `results/vuong_pvalue.rda` | Vuong test results (Figures 5 and 6), created by `03_Goodness_of_Fit.R` |
-| `results/powerlaw_bootstrap.rda` | Power-law bootstrap p-values, created by `04_Powerlaw_Bootstrap.R` |
+| `sorted_mean_incomes_99.feather` | Simulated wealth distributions for each (ω, α) |
+| `sorted_mean_incomes_99.rda` | The same data in R format (`mean_income`), created by `02_Fitting.R` and used by `03` and `04` |
+| `vuong_pvalue.rda` | Vuong test results (Figures 5 and 6), created by `03_Goodness_of_Fit.R` |
+| `powerlaw_bootstrap.rda` | Power-law bootstrap p-values, created by `04_Powerlaw_Bootstrap.R` |
 
-`data/sorted_mean_incomes_99.feather` contains 99 rows, one for each parameter set, with the following variables:
+`sorted_mean_incomes_99.feather` contains 99 rows, one for each parameter set, with the following variables:
 
 - `ω`: Proportion of wealth lost by the loser (0.1--0.9)
 - `α`: Mixing parameter between competition and investment (0.0--1.0)
 - `mean_incomes`: Wealth of the N = 1000 agents at T = 100, sorted in ascending order and averaged by rank over 100 trials (JSON string)
 
-The `.rda` files in `results/` contain the same data (`mean_income`) and the test results:
+`vuong_pvalue.rda` and `powerlaw_bootstrap.rda` contain the same data (`mean_income`) and the test results:
 
 - `pl_vs_lnorm_stat`: One-sided p-value of the Vuong test, power-law vs. log-normal (Figure 5)
 - `lnorm_vs_gamma_stat`: One-sided p-value of the Vuong test, gamma vs. log-normal (Figure 6)

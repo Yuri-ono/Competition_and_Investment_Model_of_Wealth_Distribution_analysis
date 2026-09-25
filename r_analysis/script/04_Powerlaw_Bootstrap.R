@@ -30,4 +30,4 @@ for (i in 1:nrow(df)) {
 
 df$p_value <- p_values
 
-save(df, file = here("results", "powerlaw_bootstrap.rda"))
+save(df, file = here("data", "powerlaw_bootstrap.rda"))
