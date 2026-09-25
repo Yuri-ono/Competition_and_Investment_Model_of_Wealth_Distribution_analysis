@@ -7,7 +7,8 @@ authors:
     given-names: Yuri
     orcid: "https://orcid.org/0009-0004-3494-7339"
   - family-names: Ishida
-    given-names: A.
+    given-names: Atsushi
+    orcid: "https://orcid.org/0000-0001-5301-9838"
 license: MIT
 repository-code: "https://github.com/Yuri-ono/Competition_and_Investment_Model_of_Wealth_Distribution_analysis"
 keywords:
@@ -23,5 +24,6 @@ preferred-citation:
       given-names: Yuri
       orcid: "https://orcid.org/0009-0004-3494-7339"
     - family-names: Ishida
-      given-names: A.
+      given-names: Atsushi
+      orcid: "https://orcid.org/0000-0001-5301-9838"
   journal: "The Journal of Mathematical Sociology"
