@@ -107,7 +107,6 @@ df$pl_vs_lnorm_stat <- test_stats
 df$lnorm_vs_gamma_stat <- vuongst
 
 # These are the values shown in Figures 5 and 6, drawn by 05_Plot_Heatmaps.R.
-# SANN is stochastic, so the seed above fixes the results.
 save(df, file = here("data", "vuong_pvalue.rda"))
 
 df$pl_vs_lnorm_stat |> summary()
