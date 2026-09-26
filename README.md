@@ -1,5 +1,7 @@
 # Competition and Investment Model of Wealth Distribution
 
+[![DOI](https://zenodo.org/badge/1387240250.svg)](https://doi.org/10.5281/zenodo.22971768)
+
 Replication code and data for:
 
 > Ono, Y., & Ishida, A. ([YEAR]). Competition and investment model of wealth distribution. *The Journal of Mathematical Sociology*. [DOI]
