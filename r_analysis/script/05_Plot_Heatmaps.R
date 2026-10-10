@@ -19,7 +19,7 @@ plot_heatmap <- function(df, value) {
     geom_text(aes(label = label_stat), size = 3) +
     scale_fill_gradient2(
       low = "blue", mid = "white", high = "red",
-      midpoint = 0.5, name = "Test Statistic"
+      midpoint = 0.5, name = expression(italic(p)*"-value")
     ) +
     labs(
       x = expression(omega),
